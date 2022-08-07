@@ -11,7 +11,7 @@ bot = discord.Client()
 client = commands.Bot(command_prefix= ".", case_insensitive = True)
 @client.event
 async def on_ready():
-    print("logado{0.user}".format(client))
+    print("logado {0.user}".format(client))
 @client.command( )
 async def ola(ctx):
     await ctx.send(f"Ola {ctx.author}")

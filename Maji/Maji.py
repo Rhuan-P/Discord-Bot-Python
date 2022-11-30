@@ -1,26 +1,40 @@
 # ^(\s)*$\n (detecta linhas em branco)
 import discord
+from discord import app_commands
 import random
 import os
 import logging
+
 from discord.ext import commands
 from dotenv import load_dotenv
+
+
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 bot = discord.Client()
+intents = discord.Intents.default()
 client = commands.Bot(command_prefix= ".", case_insensitive = True)
+tree = app_commands.CommandTree(client)
+
+
+
+
+
 @client.event
 async def on_ready():
     print("logado {0.user}".format(client))
-@client.command( )
+    
+@tree.command( )
 async def ola(ctx):
     await ctx.send(f"Ola {ctx.author}")
+    
 @client.command()
 async def dado(ctx,num : int ,ap:int):
+    
     #ap é o nivel da perícia ( limite 15 --nao mudar) (Calculos internos)
     NS = random.randint(1,int(num))
-    SB = int(ap/3)    #taxa sucesso bom (um terço no nivel da pericia)
-    SE = int( ap/5)  # taxa sucesso extremo ( um quinto do nivel da pericia)
+    SB = int(ap/3)    #taxa sucesso bom (um terço no nivel da perícia)
+    SE = int( ap/5)  # taxa sucesso extremo ( um quinto do nivel da perícia)
     TD = 14+SE          # taxa de desastre
     await ctx.send(f"[ {NS} ]")
     if NS <= SE:
@@ -38,13 +52,16 @@ async def dado(ctx,num : int ,ap:int):
         #se o dado caiu maior que a taxa de desaste foi um desastre
     else:
         await ctx.send("error")
+        
 @client.command()
 async def escolha(ctx, choices: str):
     await ctx.send(random.choice(choices))
+
 @client.command()
 async def roll(ctx, num ):
     dad= random.randint(1,int(num))
     await ctx.send(f' O Dado caiu em: {dad}')
+
 @client.command()
 async def menu(ctx):
         menu = discord.Embed(
